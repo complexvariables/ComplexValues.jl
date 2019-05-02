@@ -1,0 +1,4 @@
+name = "ComplexValue"
+uuid = "41a84b80-6cf2-11e9-379d-9df124847946"
+authors = ["Toby Driscoll <driscoll@udel.edu>"]
+version = "0.1.0"
