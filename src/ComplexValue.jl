@@ -3,7 +3,7 @@ module ComplexValue
 export inf
 
 # Individually overloaded operators
-import Base: iszero,isapprox,isinf,isfinite,one,zero,iszero
+import Base: Complex,iszero,isapprox,isinf,isfinite,one,zero
 import Base: +,-,*,/,sign,inv,angle,abs,abs2,real,imag,conj,show
 
 # Utilities
