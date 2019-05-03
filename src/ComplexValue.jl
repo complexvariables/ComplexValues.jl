@@ -38,14 +38,6 @@ promote_rule(::Type{Polar{S}},::Type{Sphere{T}}) where {S<:Real,T<:Real} = Polar
 # convert() boilerplate to invoke constructors
 import Base.convert
 convert(::Type{Complex{S}},z::AbstractNonnative) where S<:Real = convert(Complex{S},Complex(z))
-# convert(::Type{Complex{S}},z::Homogeneous{T}) where {S<:Real,T<:Real} = convert(Complex{S},Complex(z))
-# convert(::Type{Sphere{T}},z::Number) where T = Sphere{T}(Complex(z))
-# convert(::Type{Homogeneous{T}},z::Number) where T = Homogeneous{T}(z)
-# convert(::Type{Homogeneous{S}},z::Sphere{T}) where {S,T} = Homogeneous{S}(Complex(z))
-# convert(::Type{Homogeneous{S}},z::Polar{T}) where {S,T} = Homogeneous{S}(Complex(z))
-# convert(::Type{Sphere{S}},z::Homogeneous{T}) where {S,T} = Sphere{S}(Complex(z))
-# convert(::Type{Sphere{S}},z::Polar{T}) where {S,T} = Sphere{S}(Complex(z))
-
 convert(::Type{Polar{S}},z::AbstractNonnative) where S<:Real = Polar{S}(z)
 convert(::Type{Polar{S}},z::Number) where S<:Real = Polar{S}(Complex(z))
 convert(::Type{Sphere{S}},z::AbstractNonnative) where S<:Real = Sphere{S}(z)
