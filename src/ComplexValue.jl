@@ -13,6 +13,7 @@ cleanangle(θ) = π - mod(π-θ,2π)  # map angle to equivalent in (-pi,pi]
 include("sphere.jl")
 include("polar.jl")
 include("homogeneous.jl")
+include("plotrecipes.jl")
 
 AbstractComplex{T<:Real} = Union{Complex{T},Polar{T},Homogeneous{T},Sphere{T}}
 AbstractNonnative{T<:Real} = Union{Polar{T},Homogeneous{T},Sphere{T}}
