@@ -1,27 +1,34 @@
-struct Sphere{T<:Real}
+struct Sphere{T<:Real} <: Number
 	lat::T
 	lon::T
 end
 
 # constructors
-Sphere(args...) = Sphere{Float64}(args...)
-Sphere{T}(z::Sphere{T}) where {T} = z
-Sphere{T}(a,b) where T = Sphere{T}(promote(a,b)...)
-function Sphere{T}(z::Number) where T
+mod_to_spherelat(r) = π/2 - 2*acot(r)
+function Sphere{T}(z::Number) where T<:Real
 	r,ϕ = abs(z),angle(z)
-	θ = π/2 - 2*acot(r)
+	θ = mod_to_spherelat(r)
 	Sphere{T}(convert(T,θ),convert(T,ϕ))
 end
+#Sphere(θ::T,ϕ::T) where {T<:Real} = Sphere{T}(θ,ϕ)  # automatic, from type def
+Sphere(θ::Real,ϕ::Real) = Sphere(promote(θ,ϕ)...)
+Sphere(z::Complex{T}) where {T<:Integer} = Sphere{Float64}(z)
+Sphere(z::Complex{T}) where {T<:Real} = Sphere{T}(z)
+Sphere(z::Real) = Sphere(Complex(z))
+#Sphere{T}(z::Sphere{T}) where {T} = z    # automatic, for Number
 
 one(::Type{Sphere{T}}) where T<:Real = Sphere{T}(zero(T),zero(T))
-one(::Type{Sphere}) = one(Sphere{Float64}) 
+one(::Type{Sphere}) = one(Sphere{Float64})
 zero(::Type{Sphere{T}}) where T<:Real = Sphere{T}(T(-π/2),zero(T))
-zero(::Type{Sphere}) = zero(Sphere{Float64}) 
+zero(::Type{Sphere}) = zero(Sphere{Float64})
 inf(::Type{Sphere{T}}) where T<:Real = Sphere{T}(T(π/2),zero(T))
-inf(::Type{Sphere}) = inf(Sphere{Float64}) 
+inf(::Type{Sphere}) = inf(Sphere{Float64})
+inf(::Type{Sphere{T}},ϕ::Real) where T<:Real = Sphere{T}(T(π/2),T(ϕ))
+inf(::Type{Sphere},ϕ::Real) = inf(Sphere{typeof(ϕ)},ϕ)
+
 
 # conversion into standard complex
-function Complex(z::Sphere{S}) where S<:Real 
+function Complex(z::Sphere{S}) where S<:Real
 	if iszero(z)
 		zero(Complex{S})
 	elseif isfinite(z)
@@ -31,11 +38,11 @@ function Complex(z::Sphere{S}) where S<:Real
 	end
 end
 
-# basic arithmetic 
-+(u::Sphere,v::Sphere) = Sphere(Complex(u)+Complex(v))  # faster way? 
+# basic arithmetic
++(u::Sphere,v::Sphere) = Sphere(Complex(u)+Complex(v))  # faster way?
 -(u::Sphere) = Sphere(u.lat,u.lon+π)
 -(u::Sphere,v::Sphere) = u + (-v)
-*(u::Sphere,v::Sphere) = Sphere(Polar(u)*Polar(v))   # faster way? 
+*(u::Sphere,v::Sphere) = Sphere(Polar(u)*Polar(v))   # faster way?
 inv(u::Sphere) = Sphere(-u.lat,-u.lon)
 /(u::Sphere,v::Sphere) = u*inv(v)
 
@@ -46,11 +53,11 @@ function abs(z::Sphere{T}) where T
 		zero(T)
 	elseif isinf(z)
 		T(Inf)
-	else 
+	else
 		cot(π/4-z.lat/2)
 	end
 end
-abs2(u::Sphere) = cot(π/4-u.lat/2)^2
+abs2(u::Sphere) = abs(u)^2
 real(u::Sphere) = abs(u)*cos(u.lat)
 imag(u::Sphere) = abs(u)*sin(u.lat)
 conj(u::Sphere) = Sphere(u.lat,-u.lon)

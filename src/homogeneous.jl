@@ -1,19 +1,20 @@
-struct Homogeneous{T<:Real}
+struct Homogeneous{T<:Real} <: Number
     num::Complex{T}
     den::Complex{T}
 end
 
 # Constructors
-Homogeneous(args...) = Homogeneous{Float64}(args...)
-Homogeneous(num::Number,den::Number) = Homogeneous{Float64}(Complex{Float64}(num),Complex{Float64}(den))
-Homogeneous{T}(z::Number) where T = isinf(z) ? Homogeneous{T}(sign(z),0) : Homogeneous{T}(Complex(z),one(Complex(z)))
+Homogeneous{T}(z::Number) where {T<:Real} = isinf(z) ? Homogeneous{T}(sign(z),0) : Homogeneous{T}(Complex(z),one(Complex(z)))
+Homogeneous(num::Number,den::Number) = Homogeneous(promote(num,den)...)
+Homogeneous(num::Real,den::Real) = Homogeneous(Complex(num,zero(num)),Complex(den,zero(den)))
+Homogeneous(z::Number) = Homogeneous(z,one(z))
 
 one(::Type{Homogeneous{T}}) where T<:Real = Homogeneous{T}(one(T),one(T))
-one(::Type{Homogeneous}) = one(Homogeneous{Float64}) 
+one(::Type{Homogeneous}) = one(Homogeneous{Float64})
 zero(::Type{Homogeneous{T}}) where T<:Real = Homogeneous{T}(zero(T),one(T))
-zero(::Type{Homogeneous}) = zero(Homogeneous{Float64}) 
+zero(::Type{Homogeneous}) = zero(Homogeneous{Float64})
 inf(::Type{Homogeneous{T}}) where T<:Real = Homogeneous{T}(one(T),zero(T))
-inf(::Type{Homogeneous}) = inf(Homogeneous{Float64}) 
+inf(::Type{Homogeneous}) = inf(Homogeneous{Float64})
 
 # conversion into standard complex
 Complex(w::Homogeneous{S}) where S = w.den==0 ? S(Inf) : w.num/w.den
