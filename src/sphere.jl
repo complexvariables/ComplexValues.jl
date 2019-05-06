@@ -14,7 +14,7 @@ end
 Sphere(θ::Real,ϕ::Real) = Sphere(promote(θ,ϕ)...)
 Sphere(z::Complex{T}) where {T<:Integer} = Sphere{Float64}(z)
 Sphere(z::Complex{T}) where {T<:Real} = Sphere{T}(z)
-Sphere(z::Real) = Sphere(Complex(z))
+Sphere(z::Real) = Sphere(Complex(z,0))
 #Sphere{T}(z::Sphere{T}) where {T} = z    # automatic, for Number
 
 one(::Type{Sphere{T}}) where T<:Real = Sphere{T}(zero(T),zero(T))

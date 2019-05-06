@@ -6,7 +6,7 @@ end
 # Constructors
 Homogeneous{T}(z::Number) where {T<:Real} = isinf(z) ? Homogeneous{T}(sign(z),0) : Homogeneous{T}(Complex(z),one(Complex(z)))
 Homogeneous(num::Number,den::Number) = Homogeneous(promote(num,den)...)
-Homogeneous(num::Real,den::Real) = Homogeneous(Complex(num,zero(num)),Complex(den,zero(den)))
+Homogeneous(num::Real,den::Real) = Homogeneous(Complex(num,0),Complex(den,0))
 Homogeneous(z::Number) = Homogeneous(z,one(z))
 
 one(::Type{Homogeneous{T}}) where T<:Real = Homogeneous{T}(one(T),one(T))
