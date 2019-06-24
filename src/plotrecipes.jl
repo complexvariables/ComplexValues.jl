@@ -5,8 +5,6 @@ using RecipesBase
     Complex.(z)
 end
 
-@recipe f(z::Array{Homogeneous{T}}) where T = Complex.(z)
-
 @recipe function f(z::Array{Sphere{T}}) where T
     markersize --> 1
     x = [ cos(z.lat)*cos(z.lon) for z in z ]

@@ -1,5 +1,4 @@
 using ComplexValues
-const Homog = ComplexValues.Homogeneous
 const Sphere = ComplexValues.Sphere
 const Polar = ComplexValues.Polar
 
@@ -23,16 +22,7 @@ end
 	@test Sphere(pi/2,pi) isa Number
 end
 
-@testset "Constructions of Homogeneous" begin
-	@test Homog(-5+1im) isa Number
-	@test Homog(1.0im) isa Number
-	@test Homog(-2) isa Number
-	@test Homog(10.0f0) isa Number
-	@test Homog(2.0f0,-1im) isa Number
-	@test Homog(pi/2,pi) isa Number
-end
-
-@testset "Zero and infinity for $T" for T in [Polar,Sphere,Homog]
+@testset "Zero and infinity for $T" for T in [Polar,Sphere]
     z = inf(T)
     @test isinf(z)
     @test isinf(abs(z))
@@ -48,7 +38,7 @@ end
     @test isinf(3im/z)
 end
 
-@testset "Binary functions on $S,$T" for S in [Polar,Sphere,Homog], T in [Polar,Sphere,Homog]
+@testset "Binary functions on $S,$T" for S in [Polar,Sphere], T in [Polar,Sphere]
 	u = S(3.0+5.0im)
 	v = T(-5+1im)
 	@test Complex(u+v) ≈ Complex(u)+Complex(v)
@@ -58,7 +48,7 @@ end
 	@test Complex(u^v) ≈ Complex(u)^Complex(v)
 end
 
-@testset "Unary functions on $T" for T in [Polar,Sphere,Homog]
+@testset "Unary functions on $T" for T in [Polar,Sphere]
     u = T(3.0+5.0im)
     @test Complex(u-4) ≈ Complex(u)-4
     @test Complex(4-u) ≈ 4-Complex(u)
