@@ -5,17 +5,16 @@ end
 
 # constructors
 mod_to_spherelat(r) = π/2 - 2*acot(r)
-function Spherical{T}(z::Number) where T<:Real
+function Spherical{T}(z::Number) where T<:AbstractFloat
 	r,ϕ = abs(z),angle(z)
 	θ = mod_to_spherelat(r)
 	Spherical{T}(convert(T,θ),convert(T,ϕ))
 end
-#Spherical(θ::T,ϕ::T) where {T<:Real} = Spherical{T}(θ,ϕ)  # automatic, from type def
+Spherical(args...) = Spherical
 Spherical(θ::Real,ϕ::Real) = Spherical(promote(θ,ϕ)...)
 Spherical(z::Complex{T}) where {T<:Integer} = Spherical{Float64}(z)
 Spherical(z::Complex{T}) where {T<:Real} = Spherical{T}(z)
 Spherical(z::Real) = Spherical(complex(z,0))
-#Spherical{T}(z::Spherical{T}) where {T} = z    # automatic, for Number
 
 one(::Type{Spherical{T}}) where T<:Real = Spherical{T}(zero(T),zero(T))
 one(::Type{Spherical}) = one(Spherical{Float64})

@@ -1,29 +1,27 @@
-struct Polar{T<:Real} <: Number
+struct Polar{T<:AbstractFloat} <: Number
 	mod::T
 	ang::T
-	function Polar{T}(r::T,ϕ::T) where {T<:Real}
+	function Polar{T}(r::Real,ϕ::Real) where {T<:AbstractFloat}
 		if r < 0
 			@error "Cannot create Polar number with negative modulus"
 		else
-			new(r,ϕ)
+			new(T(r),T(ϕ))
 		end
 	end
 end
 
 # Constructors
-Polar(r::Real,ϕ::Real) = Polar(promote(r,ϕ)...)
+Polar{T}(z::Number) where {T<:AbstractFloat} = Polar{T}(abs(z),angle(z))
+Polar(r::S,ϕ::T) where {S<:Real,T<:Real} = Polar{promote_type(float(S),float(T))}(r,ϕ)
 Polar(z::Number) = Polar(abs(z),angle(z))
-Polar(r::T,ϕ::T) where {T<:Real} = Polar{T}(r,ϕ)
-Polar{T}(z::Number) where {T<:Real} = Polar{T}(abs(z),angle(z))
-Polar{T}(a::Real,b::Real) where T = Polar{T}(promote(a,b)...)
 
-one(::Type{Polar{T}}) where T<:Real = Polar{T}(one(T),zero(T))
-one(::Type{Polar}) = one(Polar{Float64})
-zero(::Type{Polar{T}}) where T<:Real = Polar{T}(zero(T),zero(T))
-zero(::Type{Polar}) = zero(Polar{Float64})
-inf(::Type{Polar{T}}) where T<:Real = Polar{T}(T(Inf),zero(T))
-inf(::Type{Polar}) = inf(Polar{Float64})
-inf(::Type{Polar{T}},ϕ::Real) where T<:Real = Polar{T}(T(Inf),T(ϕ))
+one(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(one(T),zero(T))
+one(::Type{Polar}) = one(Polar{Float})
+zero(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(zero(T),zero(T))
+zero(::Type{Polar}) = zero(Polar{Float})
+inf(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(T(Inf),zero(T))
+inf(::Type{Polar}) = inf(Polar{Float})
+inf(::Type{Polar{T}},ϕ::Real) where T<:AbstractFloat = Polar{T}(T(Inf),T(ϕ))
 inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ)
 
 # conversion into standard complex
