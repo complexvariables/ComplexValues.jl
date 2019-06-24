@@ -53,6 +53,7 @@ abs2(u::Polar) = u.mod^2
 real(u::Polar) = u.mod*cos(u.ang)
 imag(u::Polar) = u.mod*sin(u.ang)
 conj(u::Polar) = Polar(u.mod,-u.ang)
+sign(u::Polar) = Polar(one(u.mod),u.ang)
 
 iszero(u::Polar) = iszero(u.mod)
 isinf(u::Polar) = isinf(u.mod)

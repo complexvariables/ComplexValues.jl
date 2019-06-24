@@ -1,6 +1,6 @@
 module ComplexValues
 
-export inf
+export inf,normalize
 
 # Individually overloaded operators
 import Base: Complex,complex,iszero,isapprox,isinf,isfinite,one,zero
@@ -10,7 +10,7 @@ import Base: +,-,*,/,sign,inv,angle,abs,abs2,real,imag,conj,show
 cleanangle(θ) = π - mod(π-θ,2π)  # map angle to equivalent in (-pi,pi]
 
 # Definitions of the types
-include("sphere.jl")
+include("spherical.jl")
 include("polar.jl")
 include("plotrecipes.jl")
 
