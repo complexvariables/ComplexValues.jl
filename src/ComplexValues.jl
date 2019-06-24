@@ -1,4 +1,4 @@
-module ComplexValue
+module ComplexValues
 
 export inf
 
@@ -27,6 +27,7 @@ AbstractNonnative{T<:Real} = Union{Polar{T},Homogeneous{T},Sphere{T}}
 #one(z::AbstractNonnative) = one(typeof(z))
 #zero(z::AbstractNonnative) = zero(typeof(z))
 inf(z::AbstractNonnative) = inf(typeof(z))
+complex(z::AbstractNonnative) = z
 
 # promotion rules and conversion boilerplate
 import Base: promote_rule

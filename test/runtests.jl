@@ -1,7 +1,7 @@
-using ComplexValue
-const Homog = ComplexValue.Homogeneous
-const Sphere = ComplexValue.Sphere
-const Polar = ComplexValue.Polar
+using ComplexValues
+const Homog = ComplexValues.Homogeneous
+const Sphere = ComplexValues.Sphere
+const Polar = ComplexValues.Polar
 
 using Test
 
