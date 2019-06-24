@@ -1,5 +1,5 @@
 using ComplexValues
-const Sphere = ComplexValues.Sphere
+const Spherical = ComplexValues.Spherical
 const Polar = ComplexValues.Polar
 
 using Test
@@ -13,16 +13,16 @@ using Test
 	@test Polar(pi,pi) isa Number
 end
 
-@testset "Constructions of Sphere" begin
-	@test Sphere(-5+1im) isa Number
-	@test Sphere(1.0im) isa Number
-	@test Sphere(-2) isa Number
-	@test Sphere(10.0f0) isa Number
-	@test Sphere(2.0f0,pi) isa Number
-	@test Sphere(pi/2,pi) isa Number
+@testset "Constructions of Spherical" begin
+	@test Spherical(-5+1im) isa Number
+	@test Spherical(1.0im) isa Number
+	@test Spherical(-2) isa Number
+	@test Spherical(10.0f0) isa Number
+	@test Spherical(2.0f0,pi) isa Number
+	@test Spherical(pi/2,pi) isa Number
 end
 
-@testset "Zero and infinity for $T" for T in [Polar,Sphere]
+@testset "Zero and infinity for $T" for T in [Polar,Spherical]
     z = inf(T)
     @test isinf(z)
     @test isinf(abs(z))
@@ -38,7 +38,7 @@ end
     @test isinf(3im/z)
 end
 
-@testset "Binary functions on $S,$T" for S in [Polar,Sphere], T in [Polar,Sphere]
+@testset "Binary functions on $S,$T" for S in [Polar,Spherical], T in [Polar,Spherical]
 	u = S(3.0+5.0im)
 	v = T(-5+1im)
 	@test Complex(u+v) ≈ Complex(u)+Complex(v)
@@ -48,7 +48,7 @@ end
 	@test Complex(u^v) ≈ Complex(u)^Complex(v)
 end
 
-@testset "Unary functions on $T" for T in [Polar,Sphere]
+@testset "Unary functions on $T" for T in [Polar,Spherical]
     u = T(3.0+5.0im)
     @test Complex(u-4) ≈ Complex(u)-4
     @test Complex(4-u) ≈ 4-Complex(u)

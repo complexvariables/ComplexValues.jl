@@ -14,8 +14,8 @@ include("sphere.jl")
 include("polar.jl")
 include("plotrecipes.jl")
 
-AbstractComplex{T<:Real} = Union{Complex{T},Polar{T},Sphere{T}}
-AbstractNonnative{T<:Real} = Union{Polar{T},Sphere{T}}
+AbstractComplex{T<:Real} = Union{Complex{T},Polar{T},Spherical{T}}
+AbstractNonnative{T<:Real} = Union{Polar{T},Spherical{T}}
 #AllValues = Union{Number,AbstractNonnative}
 
 # +(u::AllValues,v::AllValues) = +(promote(u,v)...)
@@ -30,24 +30,24 @@ complex(z::AbstractNonnative) = z
 
 # promotion rules and conversion boilerplate
 import Base: promote_rule
-promote_rule(::Union{Type{Complex{S}},Type{S}},::Type{Sphere{T}}) where {S<:Real,T<:Real} = Sphere{promote_type(S,T)}
+promote_rule(::Union{Type{Complex{S}},Type{S}},::Type{Spherical{T}}) where {S<:Real,T<:Real} = Spherical{promote_type(S,T)}
 promote_rule(::Union{Type{Complex{S}},Type{S}},::Type{Polar{T}}) where {S<:Real,T<:Real} = Polar{promote_type(S,T)}
-promote_rule(::Type{Polar{S}},::Type{Sphere{T}}) where {S<:Real,T<:Real} = Polar{promote_type(S,T)}
+promote_rule(::Type{Polar{S}},::Type{Spherical{T}}) where {S<:Real,T<:Real} = Polar{promote_type(S,T)}
 
 # convert() boilerplate to invoke constructors
 import Base.convert
 convert(::Type{Complex{S}},z::AbstractNonnative) where S<:Real = convert(Complex{S},Complex(z))
 convert(::Type{Polar{S}},z::AbstractNonnative) where S<:Real = Polar{S}(z)
 convert(::Type{Polar{S}},z::Number) where S<:Real = Polar{S}(Complex(z))
-convert(::Type{Sphere{S}},z::AbstractNonnative) where S<:Real = Sphere{S}(z)
-convert(::Type{Sphere{S}},z::Number) where S<:Real = Sphere{S}(Complex(z))
+convert(::Type{Spherical{S}},z::AbstractNonnative) where S<:Real = Spherical{S}(z)
+convert(::Type{Spherical{S}},z::Number) where S<:Real = Spherical{S}(Complex(z))
 
 # Fallback conversion is to use Complex as an intermediary. Types can overload this with specifc cases.
 Polar{S}(z::AbstractNonnative) where S<:Real = Polar{S}(Complex(z))
-Sphere{S}(z::AbstractNonnative) where S<:Real = Sphere{S}(Complex(z))
+Spherical{S}(z::AbstractNonnative) where S<:Real = Spherical{S}(Complex(z))
 
-Sphere(z::Polar{T}) where {T<:Real} = Sphere{T}(z)
-Polar(z::Sphere) = Polar(abs(z),z.lon)
+Spherical(z::Polar{T}) where {T<:Real} = Spherical{T}(z)
+Polar(z::Spherical) = Polar(abs(z),z.lon)
 
 # Most other 1-argument and 2-argument base functions just get converted to regular complex
 for f in [:cos,:sin,:tan,:sec,:csc,:cot,:acos,:asin,:atan,:asec,:acsc,:acot,:sincos,:sinpi,

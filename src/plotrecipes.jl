@@ -5,7 +5,7 @@ using RecipesBase
     Complex.(z)
 end
 
-@recipe function f(z::Array{Sphere{T}}) where T
+@recipe function f(z::Array{Spherical{T}}) where T
     markersize --> 1
     x = [ cos(z.lat)*cos(z.lon) for z in z ]
     y = [ cos(z.lat)*sin(z.lon) for z in z ]
@@ -13,7 +13,7 @@ end
     x,y,z
 end
 
-# Following is for adding a wireframe sphere to plot of Sphere type
+# Following is for adding a wireframe sphere to plot of Spherical type
 function latcurves(n=7) 
     lats = π*(1-n:2:n-1)/(2n+2)
     ϕ = π*(-200:200)/200

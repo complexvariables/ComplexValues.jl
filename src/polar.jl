@@ -1,7 +1,7 @@
 struct Polar{T<:Real} <: Number
-	mod::T 
-	ang::T 
-	function Polar{T}(r::T,ϕ::T) where {T<:Real} 
+	mod::T
+	ang::T
+	function Polar{T}(r::T,ϕ::T) where {T<:Real}
 		if r < 0
 			@error "Cannot create Polar number with negative modulus"
 		else
@@ -10,26 +10,26 @@ struct Polar{T<:Real} <: Number
 	end
 end
 
-# Constructors 
+# Constructors
 Polar(r::Real,ϕ::Real) = Polar(promote(r,ϕ)...)
 Polar(z::Number) = Polar(abs(z),angle(z))
-Polar(r::T,ϕ::T) where {T<:Real} = Polar{T}(r,ϕ) 
+Polar(r::T,ϕ::T) where {T<:Real} = Polar{T}(r,ϕ)
 Polar{T}(z::Number) where {T<:Real} = Polar{T}(abs(z),angle(z))
 Polar{T}(a::Real,b::Real) where T = Polar{T}(promote(a,b)...)
 
 one(::Type{Polar{T}}) where T<:Real = Polar{T}(one(T),zero(T))
-one(::Type{Polar}) = one(Polar{Float64}) 
+one(::Type{Polar}) = one(Polar{Float64})
 zero(::Type{Polar{T}}) where T<:Real = Polar{T}(zero(T),zero(T))
-zero(::Type{Polar}) = zero(Polar{Float64}) 
+zero(::Type{Polar}) = zero(Polar{Float64})
 inf(::Type{Polar{T}}) where T<:Real = Polar{T}(T(Inf),zero(T))
-inf(::Type{Polar}) = inf(Polar{Float64}) 
+inf(::Type{Polar}) = inf(Polar{Float64})
 inf(::Type{Polar{T}},ϕ::Real) where T<:Real = Polar{T}(T(Inf),T(ϕ))
-inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ) 
+inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ)
 
 # conversion into standard complex
 function Complex(z::Polar{S}) where S
 	# the following allows NaN angles to be ignored for 0 and Inf
-	if iszero(z)  
+	if iszero(z)
 		zero(Complex{S})
 	elseif isinf(z)
 		Complex{S}(Inf)
@@ -39,7 +39,7 @@ function Complex(z::Polar{S}) where S
 end
 
 # Basic arithmetic
-+(u::Polar,v::Polar) = Polar(Complex(u)+Complex(v))  # faster way? 
++(u::Polar,v::Polar) = Polar(Complex(u)+Complex(v))  # faster way?
 -(u::Polar) = Polar(u.mod,u.ang+π)
 -(u::Polar,v::Polar) = u + (-v)
 *(u::Polar,v::Polar) = Polar(u.mod*v.mod,cleanangle(u.ang+v.ang))
@@ -60,4 +60,4 @@ isfinite(u::Polar) = isfinite(u.mod)
 
 # pretty output
 show(io::IO,z::Polar) = print(io,"(modulus = $(z.mod), angle = $(z.ang/pi)⋅π)")
-show(io::IO,::MIME"text/plain",z::Polar) = print(io,"ComplexPolar: ",z)
+show(io::IO,::MIME"text/plain",z::Polar) = print(io,"Complex Polar: ",z)

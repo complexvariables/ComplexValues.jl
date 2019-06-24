@@ -1,34 +1,34 @@
-struct Sphere{T<:Real} <: Number
+struct Spherical{T<:Real} <: Number
 	lat::T
 	lon::T
 end
 
 # constructors
 mod_to_spherelat(r) = π/2 - 2*acot(r)
-function Sphere{T}(z::Number) where T<:Real
+function Spherical{T}(z::Number) where T<:Real
 	r,ϕ = abs(z),angle(z)
 	θ = mod_to_spherelat(r)
-	Sphere{T}(convert(T,θ),convert(T,ϕ))
+	Spherical{T}(convert(T,θ),convert(T,ϕ))
 end
-#Sphere(θ::T,ϕ::T) where {T<:Real} = Sphere{T}(θ,ϕ)  # automatic, from type def
-Sphere(θ::Real,ϕ::Real) = Sphere(promote(θ,ϕ)...)
-Sphere(z::Complex{T}) where {T<:Integer} = Sphere{Float64}(z)
-Sphere(z::Complex{T}) where {T<:Real} = Sphere{T}(z)
-Sphere(z::Real) = Sphere(Complex(z,0))
-#Sphere{T}(z::Sphere{T}) where {T} = z    # automatic, for Number
+#Spherical(θ::T,ϕ::T) where {T<:Real} = Spherical{T}(θ,ϕ)  # automatic, from type def
+Spherical(θ::Real,ϕ::Real) = Spherical(promote(θ,ϕ)...)
+Spherical(z::Complex{T}) where {T<:Integer} = Spherical{Float64}(z)
+Spherical(z::Complex{T}) where {T<:Real} = Spherical{T}(z)
+Spherical(z::Real) = Spherical(complex(z,0))
+#Spherical{T}(z::Spherical{T}) where {T} = z    # automatic, for Number
 
-one(::Type{Sphere{T}}) where T<:Real = Sphere{T}(zero(T),zero(T))
-one(::Type{Sphere}) = one(Sphere{Float64})
-zero(::Type{Sphere{T}}) where T<:Real = Sphere{T}(T(-π/2),zero(T))
-zero(::Type{Sphere}) = zero(Sphere{Float64})
-inf(::Type{Sphere{T}}) where T<:Real = Sphere{T}(T(π/2),zero(T))
-inf(::Type{Sphere}) = inf(Sphere{Float64})
-inf(::Type{Sphere{T}},ϕ::Real) where T<:Real = Sphere{T}(T(π/2),T(ϕ))
-inf(::Type{Sphere},ϕ::Real) = inf(Sphere{typeof(ϕ)},ϕ)
+one(::Type{Spherical{T}}) where T<:Real = Spherical{T}(zero(T),zero(T))
+one(::Type{Spherical}) = one(Spherical{Float64})
+zero(::Type{Spherical{T}}) where T<:Real = Spherical{T}(T(-π/2),zero(T))
+zero(::Type{Spherical}) = zero(Spherical{Float64})
+inf(::Type{Spherical{T}}) where T<:Real = Spherical{T}(T(π/2),zero(T))
+inf(::Type{Spherical}) = inf(Spherical{Float64})
+inf(::Type{Spherical{T}},ϕ::Real) where T<:Real = Spherical{T}(T(π/2),T(ϕ))
+inf(::Type{Spherical},ϕ::Real) = inf(Spherical{typeof(ϕ)},ϕ)
 
 
 # conversion into standard complex
-function Complex(z::Sphere{S}) where S<:Real
+function Complex(z::Spherical{S}) where S<:Real
 	if iszero(z)
 		zero(Complex{S})
 	elseif isfinite(z)
@@ -39,16 +39,16 @@ function Complex(z::Sphere{S}) where S<:Real
 end
 
 # basic arithmetic
-+(u::Sphere,v::Sphere) = Sphere(Complex(u)+Complex(v))  # faster way?
--(u::Sphere) = Sphere(u.lat,u.lon+π)
--(u::Sphere,v::Sphere) = u + (-v)
-*(u::Sphere,v::Sphere) = Sphere(Polar(u)*Polar(v))   # faster way?
-inv(u::Sphere) = Sphere(-u.lat,-u.lon)
-/(u::Sphere,v::Sphere) = u*inv(v)
++(u::Spherical,v::Spherical) = Spherical(Complex(u)+Complex(v))  # faster way?
+-(u::Spherical) = Spherical(u.lat,u.lon+π)
+-(u::Spherical,v::Spherical) = u + (-v)
+*(u::Spherical,v::Spherical) = Spherical(Polar(u)*Polar(v))   # faster way?
+inv(u::Spherical) = Spherical(-u.lat,-u.lon)
+/(u::Spherical,v::Spherical) = u*inv(v)
 
 # Common complex overloads
-angle(u::Sphere) = u.lon
-function abs(z::Sphere{T}) where T
+angle(u::Spherical) = u.lon
+function abs(z::Spherical{T}) where T
 	if iszero(z)
 		zero(T)
 	elseif isinf(z)
@@ -57,16 +57,16 @@ function abs(z::Sphere{T}) where T
 		cot(π/4-z.lat/2)
 	end
 end
-abs2(u::Sphere) = abs(u)^2
-real(u::Sphere) = abs(u)*cos(u.lat)
-imag(u::Sphere) = abs(u)*sin(u.lat)
-conj(u::Sphere) = Sphere(u.lat,-u.lon)
+abs2(u::Spherical) = abs(u)^2
+real(u::Spherical) = abs(u)*cos(u.lat)
+imag(u::Spherical) = abs(u)*sin(u.lat)
+conj(u::Spherical) = Spherical(u.lat,-u.lon)
 
-iszero(u::Sphere) = u.lat == convert(typeof(u.lat),-π/2)
-isinf(u::Sphere) = u.lat == convert(typeof(u.lat),π/2)
-isfinite(u::Sphere) = ~isinf(u)
-isapprox(u::Sphere,v::Sphere,args...) = isapprox(u.lat,v.lat,args...) & isapprox(u.lon.v.lon,args...)
+iszero(u::Spherical) = u.lat == convert(typeof(u.lat),-π/2)
+isinf(u::Spherical) = u.lat == convert(typeof(u.lat),π/2)
+isfinite(u::Spherical) = ~isinf(u)
+isapprox(u::Spherical,v::Spherical,args...) = isapprox(u.lat,v.lat,args...) & isapprox(u.lon.v.lon,args...)
 
 # pretty output
-show(io::IO,z::Sphere) = print(io,"(latitude = $(z.lat/pi)⋅π, angle = $(z.lon/pi)⋅π)")
-show(io::IO,::MIME"text/plain",z::Sphere) = print(io,"Sphere: ",z)
+show(io::IO,z::Spherical) = print(io,"(latitude = $(z.lat/pi)⋅π, angle = $(z.lon/pi)⋅π)")
+show(io::IO,::MIME"text/plain",z::Spherical) = print(io,"Complex Spherical: ",z)
