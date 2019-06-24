@@ -1,6 +1,6 @@
 module ComplexValues
 
-export inf,normalize
+export inf,Polar,Spherical
 
 # Individually overloaded operators
 import Base: Complex,complex,iszero,isapprox,isinf,isfinite,one,zero
