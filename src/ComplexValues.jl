@@ -28,6 +28,7 @@ AbstractNonnative{T<:AbstractFloat} = Union{Polar{T},Spherical{T}}
 #zero(z::AbstractNonnative) = zero(typeof(z))
 inf(z::AbstractNonnative) = inf(typeof(z))
 complex(z::AbstractNonnative) = z
+float(z::AbstractNonnative) = z
 
 # promotion rules and conversion boilerplate
 import Base: promote_rule
