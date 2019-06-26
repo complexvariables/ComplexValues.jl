@@ -3,7 +3,7 @@ module ComplexValues
 export inf,Polar,Spherical
 
 # Individually overloaded operators
-import Base: Complex,complex,iszero,isapprox,isinf,isfinite,one,zero
+import Base: Complex,complex,float,iszero,isapprox,isinf,isfinite,one,zero
 import Base: +,-,*,/,sign,inv,angle,abs,abs2,real,imag,conj,show
 
 # Utilities
