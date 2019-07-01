@@ -43,7 +43,7 @@ end
 function +(u::Spherical,v::Spherical)
 	if isinf(u) 
 		isinf(v) ? NaN : u
-	elseif isinv(v)
+	elseif isinf(v)
 		v 
 	else	
 		Spherical(Complex(u)+Complex(v))  # faster way?

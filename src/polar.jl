@@ -46,7 +46,7 @@ end
 function +(u::Polar,v::Polar)
 	if isinf(u) 
 		isinf(v) ? NaN : u
-	elseif isinv(v)
+	elseif isinf(v)
 		v 
 	else	
 		Polar(Complex(u)+Complex(v))  # faster way?
