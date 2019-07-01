@@ -40,7 +40,15 @@ function Complex(z::Spherical{S}) where S<:Real
 end
 
 # basic arithmetic
-+(u::Spherical,v::Spherical) = Spherical(Complex(u)+Complex(v))  # faster way?
+function +(u::Spherical,v::Spherical)
+	if isinf(u) 
+		isinf(v) ? NaN : u
+	elseif isinv(v)
+		v 
+	else	
+		Spherical(Complex(u)+Complex(v))  # faster way?
+	end
+end
 -(u::Spherical) = Spherical(u.lat,u.lon+π)
 -(u::Spherical,v::Spherical) = u + (-v)
 *(u::Spherical,v::Spherical) = Spherical(Polar(u)*Polar(v))   # faster way?

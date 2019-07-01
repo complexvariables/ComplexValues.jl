@@ -43,7 +43,15 @@ function Complex(z::Polar{S}) where S
 end
 
 # Basic arithmetic
-+(u::Polar,v::Polar) = Polar(Complex(u)+Complex(v))  # faster way?
+function +(u::Polar,v::Polar)
+	if isinf(u) 
+		isinf(v) ? NaN : u
+	elseif isinv(v)
+		v 
+	else	
+		Polar(Complex(u)+Complex(v))  # faster way?
+	end
+end
 -(u::Polar) = Polar(u.mod,u.ang+π)
 -(u::Polar,v::Polar) = u + (-v)
 *(u::Polar,v::Polar) = Polar(u.mod*v.mod,cleanangle(u.ang+v.ang))
