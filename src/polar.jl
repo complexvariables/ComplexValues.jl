@@ -11,8 +11,14 @@ struct Polar{T<:AbstractFloat} <: Number
 end
 
 # Constructors
-Polar{T}(z::Number) where {T<:AbstractFloat} = Polar{T}(abs(z),angle(z))
-Polar(r::S,ϕ::T) where {S<:Real,T<:Real} = Polar{promote_type(float(S),float(T))}(r,ϕ)
+Polar{T}(z::Polar{T}) where {T<:AbstractFloat} = z
+Polar{T}(z::Number) where {T<:AbstractFloat} = Polar{T}(T(abs(z)),T(angle(z)))
+
+# Constructors without subtype
+function Polar(r::S,ϕ::T) where {S<:Real,T<:Real}
+	r,ϕ = promote(float(r),float(ϕ))
+	Polar{typeof(r)}(r,ϕ)
+end
 Polar(z::Number) = Polar(abs(z),angle(z))
 
 one(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(one(T),zero(T))
@@ -24,13 +30,13 @@ inf(::Type{Polar}) = inf(Polar{Float})
 inf(::Type{Polar{T}},ϕ::Real) where T<:AbstractFloat = Polar{T}(T(Inf),T(ϕ))
 inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ)
 
-# conversion into standard complex
+# conversions 
 function Complex(z::Polar{S}) where S
-	# the following allows NaN angles to be ignored for 0 and Inf
+	# the following allows NaN angles to be ignored for 0 
 	if iszero(z)
 		zero(Complex{S})
 	elseif isinf(z)
-		Complex{S}(Inf)
+		throw(InexactError(:Complex,Complex,z))
 	else
 		z.mod*exp(Complex(zero(S),z.ang))
 	end
@@ -56,6 +62,7 @@ sign(u::Polar) = Polar(one(u.mod),u.ang)
 iszero(u::Polar) = iszero(u.mod)
 isinf(u::Polar) = isinf(u.mod)
 isfinite(u::Polar) = isfinite(u.mod)
+isapprox(u::Polar,v::Polar;args...) = isapprox(u.mod,v.mod;args...) && isapprox(u.ang,v.ang;args...)
 
 # pretty output
 show(io::IO,z::Polar) = print(io,"(modulus = $(z.mod), angle = $(z.ang/pi)⋅π)")

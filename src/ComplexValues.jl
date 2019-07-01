@@ -44,13 +44,6 @@ convert(::Type{Polar{S}},z::Number) where S<:AbstractFloat = Polar{S}(Complex(z)
 convert(::Type{Spherical{S}},z::AbstractNonnative) where S<:AbstractFloat = Spherical{S}(z)
 convert(::Type{Spherical{S}},z::Number) where S<:AbstractFloat = Spherical{S}(Complex(z))
 
-# Fallback conversion is to use Complex as an intermediary. Types can overload this with specifc cases.
-Polar{S}(z::AbstractNonnative) where S<:AbstractFloat = Polar{S}(Complex(z))
-Spherical{S}(z::AbstractNonnative) where S<:AbstractFloat = Spherical{S}(Complex(z))
-
-Spherical(z::Polar{T}) where {T<:AbstractFloat} = Spherical{T}(z)
-Polar(z::Spherical) = Polar(abs(z),z.lon)
-
 # Most other 1-argument and 2-argument base functions just get converted to regular complex
 for f in [:cos,:sin,:tan,:sec,:csc,:cot,:acos,:asin,:atan,:asec,:acsc,:acot,:sincos,:sinpi,
 	:cosh,:sinh,:tanh,:sech,:csch,:coth,:acosh,:asinh,:atanh,:asech,:acsch,:acoth,
