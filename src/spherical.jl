@@ -67,8 +67,8 @@ function abs(z::Spherical{T}) where T
 	end
 end
 abs2(u::Spherical) = abs(u)^2
-real(u::Spherical) = abs(u)*cos(u.lat)
-imag(u::Spherical) = abs(u)*sin(u.lat)
+real(u::Spherical) = abs(u)*cos(u.lon)
+imag(u::Spherical) = abs(u)*sin(u.lon)
 conj(u::Spherical) = Spherical(u.lat,-u.lon)
 sign(u::Spherical) = Spherical(zero(u.lat),u.lon)
 
