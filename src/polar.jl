@@ -31,14 +31,12 @@ inf(::Type{Polar{T}},ϕ::Real) where T<:AbstractFloat = Polar{T}(T(Inf),T(ϕ))
 inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ)
 
 # conversions 
-function Complex(z::Polar{S}) where S
+function Complex(z::Polar{S}) where S<:AbstractFloat
 	# the following allows NaN angles to be ignored for 0 
 	if iszero(z)
 		zero(Complex{S})
-	elseif isinf(z)
-		throw(InexactError(:Complex,Complex,z))
 	else
-		z.mod*exp(Complex(zero(S),z.ang))
+		z.mod * exp(complex(zero(S),z.ang))
 	end
 end
 
@@ -70,7 +68,13 @@ sign(u::Polar) = Polar(one(u.mod),u.ang)
 iszero(u::Polar) = iszero(u.mod)
 isinf(u::Polar) = isinf(u.mod)
 isfinite(u::Polar) = isfinite(u.mod)
-isapprox(u::Polar,v::Polar;args...) = isapprox(u.mod,v.mod;args...) && isapprox(u.ang,v.ang;args...)
+function isapprox(u::Polar,v::Polar;args...) 
+	if isinf(u) 
+		isinf(v)
+	else
+		isapprox(u.mod,v.mod;args...) && isapprox(u.ang,v.ang;args...)
+	end
+end
 
 # pretty output
 show(io::IO,z::Polar) = print(io,"(modulus = $(z.mod), angle = $(z.ang/pi)⋅π)")

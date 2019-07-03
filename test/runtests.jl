@@ -32,7 +32,7 @@ end
 end
 
 @testset "Conversions in and out of Complex" begin 
-	for z in [-5+1im,1.0im,-2,10f0,Polar(2,-pi/5),Spherical(1,.5)]
+	for z in [-5+1im,1.0im,-2,10f0,Polar(Inf,-pi/5),Spherical(1,.5)]
 		@test Polar(Complex(z)) ≈ Polar(z)
 		@test Complex(Polar(z)) ≈ Complex(z)
 		@test Spherical(Complex(z)) ≈ Spherical(z)

@@ -32,10 +32,8 @@ inf(::Type{Spherical},ϕ::Real) = inf(Spherical{typeof(ϕ)},ϕ)
 function Complex(z::Spherical{S}) where S<:Real
 	if iszero(z)
 		zero(Complex{S})
-	elseif isfinite(z)
-		cot(π/4-z.lat/2)*exp(Complex(zero(z.lon),z.lon))
 	else
-		throw(InexactError(:Complex,Complex,z))
+		cot(π/4-z.lat/2) * exp(complex(zero(z.lon),z.lon))
 	end
 end
 
@@ -75,7 +73,8 @@ sign(u::Spherical) = Spherical(zero(u.lat),u.lon)
 iszero(u::Spherical) = u.lat == convert(typeof(u.lat),-π/2)
 isinf(u::Spherical) = u.lat == convert(typeof(u.lat),π/2)
 isfinite(u::Spherical) = ~isinf(u)
-isapprox(u::Spherical,v::Spherical;args...) = isapprox(u.lat,v.lat;args...) && isapprox(u.lon,v.lon;args...)
+S2coord(u::Spherical) = [cos(u.lat)*[cos(u.lon),sin(u.lon)];sin(u.lat)]
+isapprox(u::Spherical,v::Spherical;args...) = S2coord(u) ≈ S2coord(v)
 
 # pretty output
 show(io::IO,z::Spherical) = print(io,"(latitude = $(z.lat/pi)⋅π, angle = $(z.lon/pi)⋅π)")
