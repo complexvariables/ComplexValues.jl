@@ -17,36 +17,48 @@ end
         x,y,z
     end
 
-    function latcurves(n=7) 
+    function latcurves(n) 
         lats = π*(1-n:2:n-1)/(2n+2)
         ϕ = π*(-200:200)/200
         [(cos(θ)*cos.(ϕ),cos(θ)*sin.(ϕ),fill(sin(θ),length(ϕ))) for θ in lats]
     end
     
-    function loncurves(n=12) 
+    function loncurves(n) 
         θ = π*(-100:100)/200
         longs = 2π*(0:n-1)/n
         [(cos.(θ)*cos(ϕ),cos.(θ)*sin(ϕ),sin.(θ)) for ϕ in longs]
     end    
 
+    if isa(sphere,Tuple) 
+        nlat,nlon = sphere
+        sphere = true 
+    elseif isa(sphere,Int)
+        nlat = nlon = sphere 
+        sphere = true
+    else
+        nlon = 12
+        nlat = 7
+    end
     if sphere
-        for c in latcurves()
+        for c in latcurves(nlon)
             @series begin
                 seriestype := :path3d
-                color := :lightgray
+                color := :darkgray
                 linestyle := :solid
                 markershape := :none
+                linewidth := 0.5
                 label := ""
                 c[1],c[2],c[3]
             end
         end
 
-        for c in loncurves()
+        for c in loncurves(nlat)
             @series begin
                 seriestype := :path3d
-                color := :lightgray
+                color := :darkgray
                 linestyle := :solid
                 markershape := :none
+                linewidth := 0.5
                 label := ""
                 c[1],c[2],c[3]
             end

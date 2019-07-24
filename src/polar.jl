@@ -1,3 +1,7 @@
+""" 
+	(type) Polar 
+Polar representation of an extended complex value.
+""" 
 struct Polar{T<:AbstractFloat} <: Number
 	mod::T
 	ang::T
@@ -15,22 +19,26 @@ Polar{T}(z::Polar{T}) where {T<:AbstractFloat} = z
 Polar{T}(z::Number) where {T<:AbstractFloat} = Polar{T}(T(abs(z)),T(angle(z)))
 
 # Constructors without subtype
+"""
+	Polar(radius,azimuth)
+Construct a polar value with given radius and angle.
+
+	Polar(z) 
+Construct a polar representation of the value `z`.
+"""
 function Polar(r::S,ϕ::T) where {S<:Real,T<:Real}
 	r,ϕ = promote(float(r),float(ϕ))
 	Polar{typeof(r)}(r,ϕ)
 end
-Polar(z::Number) = Polar(abs(z),angle(z))
+Polar(z::Number) = Polar(abs(z),cleanangle(angle(z)))
 
+# one and zero
 one(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(one(T),zero(T))
 one(::Type{Polar}) = one(Polar{Float})
 zero(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(zero(T),zero(T))
 zero(::Type{Polar}) = zero(Polar{Float})
-inf(::Type{Polar{T}}) where T<:AbstractFloat = Polar{T}(T(Inf),zero(T))
-inf(::Type{Polar}) = inf(Polar{Float})
-inf(::Type{Polar{T}},ϕ::Real) where T<:AbstractFloat = Polar{T}(T(Inf),T(ϕ))
-inf(::Type{Polar},ϕ::Real) = inf(Polar{typeof(ϕ)},ϕ)
 
-# conversions 
+# conversion to standard complex
 function Complex(z::Polar{S}) where S<:AbstractFloat
 	# the following allows NaN angles to be ignored for 0 
 	if iszero(z)
@@ -50,13 +58,13 @@ function +(u::Polar,v::Polar)
 		Polar(Complex(u)+Complex(v))  # faster way?
 	end
 end
--(u::Polar) = Polar(u.mod,u.ang+π)
+-(u::Polar) = Polar(u.mod,cleanangle(u.ang+π))
 -(u::Polar,v::Polar) = u + (-v)
 *(u::Polar,v::Polar) = Polar(u.mod*v.mod,cleanangle(u.ang+v.ang))
-inv(u::Polar) = Polar(inv(u.mod),-u.ang)
+inv(u::Polar) = Polar(inv(u.mod),cleanangle(-u.ang))
 /(u::Polar,v::Polar) = u * inv(v)
 
-# Common complex overloads
+# common complex overloads
 angle(u::Polar) = u.ang
 abs(u::Polar) = u.mod
 abs2(u::Polar) = u.mod^2
@@ -65,6 +73,7 @@ imag(u::Polar) = u.mod*sin(u.ang)
 conj(u::Polar) = Polar(u.mod,-u.ang)
 sign(u::Polar) = Polar(one(u.mod),u.ang)
 
+# numerical comparisons
 iszero(u::Polar) = iszero(u.mod)
 isinf(u::Polar) = isinf(u.mod)
 isfinite(u::Polar) = isfinite(u.mod)

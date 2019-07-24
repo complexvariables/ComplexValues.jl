@@ -7,7 +7,7 @@ import Base: Complex,complex,float,iszero,isapprox,isinf,isfinite,one,zero
 import Base: +,-,*,/,sign,inv,angle,abs,abs2,real,imag,conj,show
 
 # Utilities
-cleanangle(θ) = π - mod(π-θ,2π)  # map angle to equivalent in (-pi,pi]
+cleanangle(θ) = π - mod2pi(π-θ)  # map angle to equivalent in (-pi,pi]
 Float = typeof(1.)  # default base floating type 
 
 # Definitions of the types

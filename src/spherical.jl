@@ -1,3 +1,7 @@
+""" 
+	(type) Spherical 
+Representation of an extended complex value on the Riemann sphere.
+""" 
 struct Spherical{T<:AbstractFloat} <: Number
 	lat::T
 	lon::T
@@ -13,20 +17,24 @@ function Spherical{T}(z::Number) where T<:AbstractFloat
 end
 
 # Constructors without subtype
+"""
+	Spherical(latitude,azimuth)
+Construct a spherical representation with given `latitude` in [-π/2,π/2] and `azimuth`. 
+
+	Spherical(z)
+Construct a spherical representation of the value `z`.
+"""
 function Spherical(θ::Real,ϕ::Real) 
 	θ,ϕ = promote(float(θ),float(ϕ))
 	Spherical{typeof(θ)}(θ,ϕ)
 end
 Spherical(z::Number) = Spherical(latitude(z),angle(z))
 
+# one and zero
 one(::Type{Spherical{T}}) where T<:Real = Spherical{T}(zero(T),zero(T))
 one(::Type{Spherical}) = one(Spherical{Float64})
 zero(::Type{Spherical{T}}) where T<:Real = Spherical{T}(T(-π/2),zero(T))
 zero(::Type{Spherical}) = zero(Spherical{Float64})
-inf(::Type{Spherical{T}}) where T<:Real = Spherical{T}(T(π/2),zero(T))
-inf(::Type{Spherical}) = inf(Spherical{Float64})
-inf(::Type{Spherical{T}},ϕ::Real) where T<:Real = Spherical{T}(T(π/2),T(ϕ))
-inf(::Type{Spherical},ϕ::Real) = inf(Spherical{typeof(ϕ)},ϕ)
 
 # conversion into standard complex
 function Complex(z::Spherical{S}) where S<:Real
@@ -47,14 +55,14 @@ function +(u::Spherical,v::Spherical)
 		Spherical(Complex(u)+Complex(v))  # faster way?
 	end
 end
--(u::Spherical) = Spherical(u.lat,u.lon+π)
+-(u::Spherical) = Spherical(u.lat,cleanangle(u.lon+π))
 -(u::Spherical,v::Spherical) = u + (-v)
 *(u::Spherical,v::Spherical) = Spherical(Polar(u)*Polar(v))   # faster way?
-inv(u::Spherical) = Spherical(-u.lat,-u.lon)
+inv(u::Spherical) = Spherical(-u.lat,cleanangle(-u.lon))
 /(u::Spherical,v::Spherical) = u*inv(v)
 
-# Common complex overloads
-angle(u::Spherical) = u.lon
+# common complex overloads
+angle(u::Spherical) = cleanangle(u.lon)
 function abs(z::Spherical{T}) where T
 	if iszero(z)
 		zero(T)
@@ -70,6 +78,7 @@ imag(u::Spherical) = abs(u)*sin(u.lon)
 conj(u::Spherical) = Spherical(u.lat,-u.lon)
 sign(u::Spherical) = Spherical(zero(u.lat),u.lon)
 
+# numerical comparisons
 iszero(u::Spherical) = u.lat == convert(typeof(u.lat),-π/2)
 isinf(u::Spherical) = u.lat == convert(typeof(u.lat),π/2)
 isfinite(u::Spherical) = ~isinf(u)

@@ -41,7 +41,7 @@ end
 end
 
 @testset "Zero and infinity for $T" for T in [Polar,Spherical]
-    z = inf(T)
+    z = T(Inf)
     @test isinf(z)
     @test isinf(abs(z))
     @test iszero(1/z)
