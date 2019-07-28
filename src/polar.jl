@@ -1,6 +1,6 @@
 """ 
 	(type) Polar 
-Polar representation of an extended complex value.
+Polar representation of a complex value.
 """ 
 struct Polar{T<:AbstractFloat} <: Number
 	mod::T
@@ -22,14 +22,15 @@ Polar{T}(z::Number) where {T<:AbstractFloat} = Polar{T}(T(abs(z)),T(angle(z)))
 """
 	Polar(radius,azimuth)
 Construct a polar value with given radius and angle.
-
-	Polar(z) 
-Construct a polar representation of the value `z`.
 """
 function Polar(r::S,ϕ::T) where {S<:Real,T<:Real}
 	r,ϕ = promote(float(r),float(ϕ))
 	Polar{typeof(r)}(r,ϕ)
 end
+"""
+Polar(z) 
+Construct a polar representation of the value `z`.
+"""
 Polar(z::Number) = Polar(abs(z),cleanangle(angle(z)))
 
 # one and zero

@@ -1,6 +1,6 @@
 """ 
 	(type) Spherical 
-Representation of an extended complex value on the Riemann sphere.
+Representation of a complex value on the Riemann sphere.
 """ 
 struct Spherical{T<:AbstractFloat} <: Number
 	lat::T
@@ -20,14 +20,15 @@ end
 """
 	Spherical(latitude,azimuth)
 Construct a spherical representation with given `latitude` in [-π/2,π/2] and `azimuth`. 
-
-	Spherical(z)
-Construct a spherical representation of the value `z`.
 """
 function Spherical(θ::Real,ϕ::Real) 
 	θ,ϕ = promote(float(θ),float(ϕ))
 	Spherical{typeof(θ)}(θ,ϕ)
 end
+"""
+Spherical(z)
+Construct a spherical representation of the value `z`.
+"""
 Spherical(z::Number) = Spherical(latitude(z),angle(z))
 
 # one and zero
@@ -44,6 +45,12 @@ function Complex(z::Spherical{S}) where S<:Real
 		cot(π/4-z.lat/2) * exp(complex(zero(z.lon),z.lon))
 	end
 end
+
+"""
+	S2coord(u::Spherical)
+Convert the spherical value to a 3-vector of coordinates on the unit sphere. 
+"""
+S2coord(u::Spherical) = [cos(u.lat)*[cos(u.lon),sin(u.lon)];sin(u.lat)]
 
 # basic arithmetic
 function +(u::Spherical,v::Spherical)
@@ -82,7 +89,6 @@ sign(u::Spherical) = Spherical(zero(u.lat),u.lon)
 iszero(u::Spherical) = u.lat == convert(typeof(u.lat),-π/2)
 isinf(u::Spherical) = u.lat == convert(typeof(u.lat),π/2)
 isfinite(u::Spherical) = ~isinf(u)
-S2coord(u::Spherical) = [cos(u.lat)*[cos(u.lon),sin(u.lon)];sin(u.lat)]
 isapprox(u::Spherical,v::Spherical;args...) = S2coord(u) ≈ S2coord(v)
 
 # pretty output
