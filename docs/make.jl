@@ -14,7 +14,7 @@ makedocs(sitename="ComplexValues",
     )
 
 deploydocs(
-    repo = "github.com/ComplexVariables/ComplexValues.jl.git",
-    versions = ["v#.#"],
-    make = nothing
+    repo = "github.com/ComplexVariables/ComplexValues.jl.git"
+#    versions = ["v#.#"],
+#    make = nothing
     )
