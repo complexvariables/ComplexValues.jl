@@ -20,6 +20,7 @@ end
 	@test Spherical(10.0f0) isa Number
 	@test Spherical(2.0f0,pi) isa Number
 	@test Spherical(pi/2,pi) isa Number
+	@test S2coord(Spherical(1)) ≈ [1,0,0]
 end
 
 @testset "Conversions between Polar, Spherical" begin 

@@ -1,6 +1,6 @@
 module ComplexValues
 
-export Polar,Spherical
+export Polar,Spherical,S2coord
 
 # Individually overloaded operators
 import Base: Complex,complex,float,iszero,isapprox,isinf,isfinite,one,zero
