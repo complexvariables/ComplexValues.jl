@@ -1,4 +1,3 @@
-push!(LOAD_PATH,"/home/driscoll/Dropbox/julia/ComplexValues/src")
 push!(LOAD_PATH,"../src")
 using Documenter, ComplexValues
 
@@ -14,8 +13,8 @@ makedocs(sitename="ComplexValues",
     doctest = true
     )
 
-# deploydocs(
-#     repo = "github.com/ComplexVariables/ComplexValues.jl.git",
-#     julia = "1.0",
-#     deps = nothing,
-#     make = nothing
+deploydocs(
+    repo = "github.com/ComplexVariables/ComplexValues.jl.git",
+    versions = ["v#.#"],
+    make = nothing
+    )
