@@ -1,11 +1,10 @@
 # ComplexValues
 *Polar and Riemann sphere representations of complex numbers in Julia*
 
-**Documentation**           | **Build Status**                                                                        |
+**Documentation**           | **Build Status**          |
 |:-------------------------:|:----------------------------:|
-[![](docs-stable-img)](docs-stable-url) | [![](travis-img)][travis-url] 
-
-<!-- [![](https://img.shields.io/badge/docs-dev-blue.svg)](https://USER_NAME.github.io/PACKAGE_NAME.jl/dev) -->
+|     |        |
+| [![][docs-stable-img]][docs-stable-url] | [![][travis-img]][travis-url]  |
 
 ## Installation
 
