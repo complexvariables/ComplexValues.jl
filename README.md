@@ -3,7 +3,6 @@
 
 **Documentation**           | **Build Status**          |
 |:-------------------------:|:----------------------------:|
-|     |        |
 | [![][docs-stable-img]][docs-stable-url] | [![][travis-img]][travis-url]  |
 
 ## Installation
