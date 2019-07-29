@@ -20,14 +20,14 @@ S2coord(ans)
 
 Plots of `Polar` type are as usual, but on polar axes.
 
-```@example 1
+```@example 1 
 using Plots  # you must add this package first
 zc = exp.(1im*2π*(0:500)/500);
 plot(Polar.(0.5 .+ zc),legend=false)  
 savefig("polar_circle.svg"); nothing # hide
 ```
 
-[](polar_circle.svg)
+![](polar_circle.svg)
 
 ```@example 1
 zl = collect(LinRange(50-50im,-50+50im,601));
@@ -36,9 +36,9 @@ plot!(Spherical.(-1 .+ zl),l=3)
 savefig("sphere_plot.svg"); nothing # hide
 ```
 
-[](sphere_plot.svg)
+![](sphere_plot.svg)
 
-(Unfortunately, plotting backends and exports don't consistently support setting the aspect ratio in 3D. I've had the most success with `plotlyjs()` for interactive plots.)
+(Unfortunately, plotting backends and exports don't consistently support setting the aspect ratio in 3D. I've had success with `plotlyjs()` for interactive plots, though not when exporting them.)
 
 ## Usage notes
 

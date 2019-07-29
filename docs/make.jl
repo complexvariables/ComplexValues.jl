@@ -1,7 +1,7 @@
 push!(LOAD_PATH,"../src")
 using Documenter, ComplexValues
 
-makedocs(sitename="ComplexValues",
+makedocs(sitename="ComplexValues.jl",
     format = Documenter.HTML(),
     authors = "Toby Driscoll",
     pages = [
@@ -14,7 +14,7 @@ makedocs(sitename="ComplexValues",
     )
 
 deploydocs(
-    repo = "github.com/ComplexVariables/ComplexValues.jl.git"
+    repo = "github.com/complexvariables/ComplexValues.jl.git"
 #    versions = ["v#.#"],
 #    make = nothing
     )
