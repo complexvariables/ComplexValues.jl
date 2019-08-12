@@ -23,7 +23,7 @@ julia&gt; S2coord(ans)
   0.0
  -1.0</code></pre><h3><a class="nav-anchor" id="Plots-1" href="#Plots-1">Plots</a></h3><p>Plots of <code>Polar</code> type are as usual, but on polar axes.</p><pre><code class="language-julia">using Plots  # you must add this package first
 zc = exp.(1im*2π*(0:500)/500);
-plot(Polar.(0.5 .+ zc),legend=false)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/TMylY/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+plot(Polar.(0.5 .+ zc),legend=false)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
 connect: Connection refused
 GKS: can&#39;t connect to GKS socket application
 Did you start &#39;gksqt&#39;?
@@ -31,7 +31,7 @@ Did you start &#39;gksqt&#39;?
 GKS: Open failed in routine OPEN_WS
 GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS</code></pre><p><img src="polar_circle.svg" alt/></p><pre><code class="language-julia">zl = collect(LinRange(50-50im,-50+50im,601));
 plot(Spherical.(zc/2),l=3,leg=false)  # plot on the Riemann sphere
-plot!(Spherical.(-1 .+ zl),l=3)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/TMylY/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+plot!(Spherical.(-1 .+ zl),l=3)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
 connect: Connection refused
 GKS: can&#39;t connect to GKS socket application
 Did you start &#39;gksqt&#39;?
