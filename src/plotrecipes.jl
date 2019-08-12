@@ -9,6 +9,9 @@ end
     delete!(plotattributes,:sphere) 
     markersize --> 1
     aspect_ratio --> 1
+    xlims --> (-1,1)
+    ylims --> (-1,1)
+    zlims --> (-1,1)
 
     @series begin
         x = [ cos(z.lat)*cos(z.lon) for z in z ]
@@ -36,11 +39,11 @@ end
         nlat = nlon = sphere 
         sphere = true
     else
-        nlon = 12
-        nlat = 7
+        nlon = 8
+        nlat = 5
     end
     if sphere
-        for c in latcurves(nlon)
+        for c in latcurves(nlat)
             @series begin
                 seriestype := :path3d
                 color := :darkgray
@@ -52,7 +55,7 @@ end
             end
         end
 
-        for c in loncurves(nlat)
+        for c in loncurves(nlon)
             @series begin
                 seriestype := :path3d
                 color := :darkgray
