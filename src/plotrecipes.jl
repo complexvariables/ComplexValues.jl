@@ -39,15 +39,17 @@ end
         nlat = nlon = sphere 
         sphere = true
     else
-        nlon = 8
-        nlat = 5
+        nlon = 12
+        nlat = 7
     end
     if sphere
         for c in latcurves(nlat)
             @series begin
+                group := 2
                 seriestype := :path3d
-                color := :darkgray
-                linestyle := :solid
+                color := :gray
+                linestyle := :dot
+                linealpha := 0.5
                 markershape := :none
                 linewidth := 0.5
                 label := ""
@@ -57,9 +59,11 @@ end
 
         for c in loncurves(nlon)
             @series begin
+                group := 2
                 seriestype := :path3d
-                color := :darkgray
-                linestyle := :solid
+                color := :gray
+                linealpha := 0.5
+                linestyle := :dot
                 markershape := :none
                 linewidth := 0.5
                 label := ""
