@@ -4,7 +4,6 @@ authors = ["Toby Driscoll <driscoll@udel.edu>"]
 version = "0.2.1"
 
 [deps]
-Documenter = "e30172f5-a6a5-5a46-863b-614d45cd2de4"
 RecipesBase = "3cdcf5f2-1ef4-517c-9805-6587b60abb01"
 Test = "8dfed614-e22c-5e08-85e1-65c5234f0b40"
 
