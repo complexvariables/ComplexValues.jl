@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><title>Home · ComplexValues.jl</title><link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/4.2.0/normalize.min.css" rel="stylesheet" type="text/css"/><link href="https://fonts.googleapis.com/css?family=Lato|Roboto+Mono" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.min.css" rel="stylesheet" type="text/css"/><link href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/default.min.css" rel="stylesheet" type="text/css"/><script>documenterBaseURL="."</script><script src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.2.0/require.min.js" data-main="assets/documenter.js"></script><script src="siteinfo.js"></script><script src="../versions.js"></script><link href="assets/documenter.css" rel="stylesheet" type="text/css"/></head><body><nav class="toc"><h1>ComplexValues.jl</h1><select id="version-selector" onChange="window.location.href=this.value" style="visibility: hidden"></select><form class="search" id="search-form" action="search/"><input id="search-query" name="q" type="text" placeholder="Search docs"/></form><ul><li class="current"><a class="toctext" href>Home</a><ul class="internal"><li><a class="toctext" href="#Examples-1">Examples</a></li><li><a class="toctext" href="#Usage-notes-1">Usage notes</a></li></ul></li><li><a class="toctext" href="polar/">Polar</a></li><li><a class="toctext" href="spherical/">Spherical</a></li></ul></nav><article id="docs"><header><nav><ul><li><a href>Home</a></li></ul><a class="edit-page" href="https://github.com/complexvariables/ComplexValues.jl/blob/master/docs/src/index.md"><span class="fa"></span> Edit on GitHub</a></nav><hr/><div id="topbar"><span>Home</span><a class="fa fa-bars" href="#"></a></div></header><h1><a class="nav-anchor" id="ComplexValues-1" href="#ComplexValues-1">ComplexValues</a></h1><p>This package provides two additional types for representing complex values in Julia: a <code>Polar</code> type for representation in polar coordinates, and a <code>Spherical</code> type for representation on the Riemann sphere. Both types also affect plotting commands in the <a href="https://github.com/JuliaPlots/Plots.jl">Plots</a> package.</p><h2><a class="nav-anchor" id="Examples-1" href="#Examples-1">Examples</a></h2><pre><code class="language-julia-repl">julia&gt; using ComplexValues
+
+julia&gt; Polar(1im)
+Complex Polar: (modulus = 1.0, angle = 0.5⋅π)
+
+julia&gt; Polar.(exp.(1im*LinRange(0,2π,6)))
+6-element Array{Polar{Float64},1}:
+                     (modulus = 1.0, angle = 0.0⋅π)
+      (modulus = 0.9999999999999999, angle = 0.4⋅π)
+                     (modulus = 1.0, angle = 0.8⋅π)
+     (modulus = 0.9999999999999999, angle = -0.8⋅π)
+                    (modulus = 1.0, angle = -0.4⋅π)
+ (modulus = 1.0, angle = -1.4135798584282297e-16⋅π)
+
+julia&gt; Spherical(Inf)
+Complex Spherical: (latitude = 0.5⋅π, angle = 0.0⋅π)</code></pre><p>A <code>Spherical</code> value can be converted to a 3-vector of coordinates on the unit sphere <span>$S^2$</span>.</p><pre><code class="language-julia-repl">julia&gt; Spherical(0)
+Complex Spherical: (latitude = -0.5⋅π, angle = 0.0⋅π)
+
+julia&gt; S2coord(ans)
+3-element Array{Float64,1}:
+  6.123233995736766e-17
+  0.0
+ -1.0</code></pre><h3><a class="nav-anchor" id="Plots-1" href="#Plots-1">Plots</a></h3><p>Plots of <code>Polar</code> type are as usual, but on polar axes.</p><pre><code class="language-julia">using Plots  # you must add this package first
+zc = exp.(1im*2π*(0:500)/500);
+plot(Polar.(0.5 .+ zc),legend=false)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+connect: Connection refused
+GKS: can&#39;t connect to GKS socket application
+Did you start &#39;gksqt&#39;?
+
+GKS: Open failed in routine OPEN_WS
+GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS</code></pre><p><img src="polar_circle.svg" alt/></p><pre><code class="language-julia">zl = collect(LinRange(50-50im,-50+50im,601));
+plot(Spherical.(zc/2),l=3,leg=false)  # plot on the Riemann sphere
+plot!(Spherical.(-1 .+ zl),l=3)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+connect: Connection refused
+GKS: can&#39;t connect to GKS socket application
+Did you start &#39;gksqt&#39;?
+
+GKS: Open failed in routine OPEN_WS
+GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS</code></pre><p><img src="sphere_plot.svg" alt/></p><p>(Unfortunately, plotting backends and exports don&#39;t consistently support setting the aspect ratio in 3D. I&#39;ve had success with <code>plotlyjs()</code> for interactive plots, though not when exporting them.)</p><h2><a class="nav-anchor" id="Usage-notes-1" href="#Usage-notes-1">Usage notes</a></h2><ul><li>Either of the two new types can be converted to a built-in complex floating number via <code>Complex</code>.</li><li>Promotion of any number along with a <code>Spherical</code> value results in <code>Spherical</code>. </li><li>Promotion of any built-in number type with a <code>Polar</code> results in <code>Polar</code>. </li><li>Standard unary and binary functions in <code>Base</code> are extended to work with the new types. </li><li>The type <code>AnyComplex{T&lt;:AbstractFloat}</code> is defined (but not exported) as the union of the built-in <code>Complex{T}</code> together with <code>Polar{T}</code> and <code>Spherical{T}</code>. </li></ul><footer><hr/><a class="next" href="polar/"><span class="direction">Next</span><span class="title">Polar</span></a></footer></article></body></html>
