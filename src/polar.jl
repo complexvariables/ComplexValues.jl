@@ -6,11 +6,8 @@ struct Polar{T<:AbstractFloat} <: Number
 	mod::T
 	ang::T
 	function Polar{T}(r::Real,ϕ::Real) where {T<:AbstractFloat}
-		if r < 0
-			@error "Cannot create Polar number with negative modulus"
-		else
-			new(T(r),T(ϕ))
-		end
+		@assert(r >= 0, "Cannot create Polar number with negative modulus")
+		new(T(r),T(ϕ))
 	end
 end
 
