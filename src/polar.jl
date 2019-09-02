@@ -1,7 +1,7 @@
-""" 
-	(type) Polar 
+"""
+	(type) Polar
 Polar representation of a complex value.
-""" 
+"""
 struct Polar{T<:AbstractFloat} <: Number
 	mod::T
 	ang::T
@@ -28,7 +28,7 @@ function Polar(r::S,ϕ::T) where {S<:Real,T<:Real}
 	Polar{typeof(r)}(r,ϕ)
 end
 """
-Polar(z) 
+Polar(z)
 Construct a polar representation of the value `z`.
 """
 Polar(z::Number) = Polar(abs(z),cleanangle(angle(z)))
@@ -41,7 +41,7 @@ zero(::Type{Polar}) = zero(Polar{Float})
 
 # conversion to standard complex
 function Complex(z::Polar{S}) where S<:AbstractFloat
-	# the following allows NaN angles to be ignored for 0 
+	# the following allows NaN angles to be ignored for 0
 	if iszero(z)
 		zero(Complex{S})
 	else
@@ -51,11 +51,11 @@ end
 
 # Basic arithmetic
 function +(u::Polar,v::Polar)
-	if isinf(u) 
+	if isinf(u)
 		isinf(v) ? NaN : u
 	elseif isinf(v)
-		v 
-	else	
+		v
+	else
 		Polar(Complex(u)+Complex(v))  # faster way?
 	end
 end
@@ -78,8 +78,8 @@ sign(u::Polar) = Polar(one(u.mod),u.ang)
 iszero(u::Polar) = iszero(u.mod)
 isinf(u::Polar) = isinf(u.mod)
 isfinite(u::Polar) = isfinite(u.mod)
-function isapprox(u::Polar,v::Polar;args...) 
-	if isinf(u) 
+function isapprox(u::Polar,v::Polar;args...)
+	if isinf(u)
 		isinf(v)
 	else
 		isapprox(u.mod,v.mod;args...) && isapprox(u.ang,v.ang;args...)
