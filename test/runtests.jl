@@ -23,7 +23,7 @@ end
 	@test S2coord(Spherical(1)) ≈ [1,0,0]
 end
 
-@testset "Conversions between Polar, Spherical" begin 
+@testset "Conversions between Polar, Spherical" begin
 	for z in [-5+1im,1.0im,-2,10f0,Polar(Inf,-pi/5),Spherical(1,.5)]
 		@test Polar(Spherical(z)) ≈ z
 	end
@@ -32,7 +32,7 @@ end
 	end
 end
 
-@testset "Conversions in and out of Complex" begin 
+@testset "Conversions in and out of Complex" begin
 	for z in [-5+1im,1.0im,-2,10f0,Polar(Inf,-pi/5),Spherical(1,.5)]
 		@test Polar(Complex(z)) ≈ Polar(z)
 		@test Complex(Polar(z)) ≈ Complex(z)

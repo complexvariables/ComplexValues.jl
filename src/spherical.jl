@@ -1,7 +1,7 @@
-""" 
-	(type) Spherical 
+"""
+	(type) Spherical
 Representation of a complex value on the Riemann sphere.
-""" 
+"""
 struct Spherical{T<:AbstractFloat} <: Number
 	lat::T
 	lon::T
@@ -19,9 +19,9 @@ end
 # Constructors without subtype
 """
 	Spherical(latitude,azimuth)
-Construct a spherical representation with given `latitude` in [-π/2,π/2] and `azimuth`. 
+Construct a spherical representation with given `latitude` in [-π/2,π/2] and `azimuth`.
 """
-function Spherical(θ::Real,ϕ::Real) 
+function Spherical(θ::Real,ϕ::Real)
 	θ,ϕ = promote(float(θ),float(ϕ))
 	Spherical{typeof(θ)}(θ,ϕ)
 end
@@ -48,17 +48,17 @@ end
 
 """
 	S2coord(u::Spherical)
-Convert the spherical value to a 3-vector of coordinates on the unit sphere. 
+Convert the spherical value to a 3-vector of coordinates on the unit sphere.
 """
 S2coord(u::Spherical) = [cos(u.lat)*[cos(u.lon),sin(u.lon)];sin(u.lat)]
 
 # basic arithmetic
 function +(u::Spherical,v::Spherical)
-	if isinf(u) 
+	if isinf(u)
 		isinf(v) ? NaN : u
 	elseif isinf(v)
-		v 
-	else	
+		v
+	else
 		Spherical(Complex(u)+Complex(v))  # faster way?
 	end
 end
