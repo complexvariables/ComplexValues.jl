@@ -11,8 +11,10 @@ The package can be installed with Julia's package manager:
 
 ```julia
 julia> import Pkg
-julia> Pkg.add("https://github.com/complexvariables/ComplexValues.jl")
+julia> Pkg.add("ComplexValues")
 ```
+
+or simply `] add ComplexValues` from the command line.
 
 ## Project Status
 
