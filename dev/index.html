@@ -23,18 +23,16 @@ julia&gt; S2coord(ans)
   0.0
  -1.0</code></pre><h3><a class="nav-anchor" id="Plots-1" href="#Plots-1">Plots</a></h3><p>Plots of <code>Polar</code> type are as usual, but on polar axes.</p><pre><code class="language-julia">using Plots  # you must add this package first
 zc = exp.(1im*2π*(0:500)/500);
-plot(Polar.(0.5 .+ zc),legend=false)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+plot(Polar.(0.5 .+ zc),legend=false)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/yMV3y/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
 connect: Connection refused
 GKS: can&#39;t connect to GKS socket application
-Did you start &#39;gksqt&#39;?
 
 GKS: Open failed in routine OPEN_WS
 GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS</code></pre><p><img src="polar_circle.svg" alt/></p><pre><code class="language-julia">zl = collect(LinRange(50-50im,-50+50im,601));
 plot(Spherical.(zc/2),l=3,leg=false)  # plot on the Riemann sphere
-plot!(Spherical.(-1 .+ zl),l=3)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/ZI5OE/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
+plot!(Spherical.(-1 .+ zl),l=3)</code></pre><pre><code class="language-none">/home/travis/.julia/packages/GR/yMV3y/src/../deps/gr/bin/gksqt: error while loading shared libraries: libQt5Widgets.so.5: cannot open shared object file: No such file or directory
 connect: Connection refused
 GKS: can&#39;t connect to GKS socket application
-Did you start &#39;gksqt&#39;?
 
 GKS: Open failed in routine OPEN_WS
 GKS: GKS not in proper state. GKS must be either in the state WSOP or WSAC in routine ACTIVATE_WS</code></pre><p><img src="sphere_plot.svg" alt/></p><p>(Unfortunately, plotting backends and exports don&#39;t consistently support setting the aspect ratio in 3D. I&#39;ve had success with <code>plotlyjs()</code> for interactive plots, though not when exporting them.)</p><h2><a class="nav-anchor" id="Usage-notes-1" href="#Usage-notes-1">Usage notes</a></h2><ul><li>Either of the two new types can be converted to a built-in complex floating number via <code>Complex</code>.</li><li>Promotion of any number along with a <code>Spherical</code> value results in <code>Spherical</code>. </li><li>Promotion of any built-in number type with a <code>Polar</code> results in <code>Polar</code>. </li><li>Standard unary and binary functions in <code>Base</code> are extended to work with the new types. </li><li>The type <code>AnyComplex{T&lt;:AbstractFloat}</code> is defined (but not exported) as the union of the built-in <code>Complex{T}</code> together with <code>Polar{T}</code> and <code>Spherical{T}</code>. </li></ul><footer><hr/><a class="next" href="polar/"><span class="direction">Next</span><span class="title">Polar</span></a></footer></article></body></html>
