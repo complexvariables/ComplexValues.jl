@@ -8,7 +8,7 @@ import Base: +,-,*,/,sign,inv,angle,abs,abs2,real,imag,conj,show
 
 # Utilities
 cleanangle(θ) = π - mod2pi(π-θ)  # map angle to equivalent in (-pi,pi]
-Float = typeof(1.)  # default base floating type 
+Float = typeof(1.)  # default base floating type
 
 # Definitions of the types
 include("spherical.jl")
