@@ -6,8 +6,6 @@ Multiplication, division, `abs`, `abs2`, and `sign` of `Polar` values exploit th
 
 The comparators `iszero`, `isinf`, `isfinite`, and `isapprox` are defined appropriately.
 
-Using `Plots`, a plot of `Polar` values will be drawn using polar axes if the backend supports doing so.
-
 ```@autodocs
 Modules = [ComplexValues]
 Order = [:type, :function]

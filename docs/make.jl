@@ -5,7 +5,7 @@ makedocs(sitename="ComplexValues.jl",
     format = Documenter.HTML(),
     authors = "Toby Driscoll",
     pages = [
-        "Home" => "index.md",
+        "Overview" => "index.md",
         "Polar" => "polar.md",
         "Spherical" => "spherical.md"
 		],
