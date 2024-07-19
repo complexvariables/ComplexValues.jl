@@ -41,17 +41,17 @@ end
     end
 end
 
-@testset "Zero and infinity for $T" for T in [Polar, Spherical]
-    z = T(Inf)
+@testset "Zero and infinity for $T,$S" for T in [Polar, Spherical], S = (Float64, BigFloat)
+    z = T{S}(Inf)
     @test isinf(z)
     @test isinf(abs(z))
     @test iszero(1 / z)
     @test iszero(abs(inv(z)))
     @test iszero(Complex(4 / z))
-    z = T(0)
+    z = T{S}(0)
     @test iszero(z)
     @test isinf(3im / z)
-    z = zero(T)
+    z = zero(T{S})
     @test iszero(z)
     @test isinf(3im / z)
 end

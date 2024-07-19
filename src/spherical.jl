@@ -46,7 +46,7 @@ Spherical(z::Number) = Spherical(latitude(z), angle(z))
 # one and zero
 one(::Type{Spherical{T}}) where {T<:Real} = Spherical{T}(zero(T), zero(T))
 one(::Type{Spherical}) = one(Spherical{Float64})
-zero(::Type{Spherical{T}}) where {T<:Real} = Spherical{T}(T(-π / 2), zero(T))
+zero(::Type{Spherical{T}}) where {T<:Real} = Spherical{T}(-T(π) / 2, zero(T))
 zero(::Type{Spherical}) = zero(Spherical{Float64})
 
 # conversion into standard complex
@@ -104,8 +104,8 @@ real_type(::Spherical{T}) where {T} = T
 real_type(::Type{Spherical{T}}) where {T} = T
 
 # numerical comparisons
-iszero(u::Spherical) = u.lat == convert(typeof(u.lat), -π / 2)
-isinf(u::Spherical) = u.lat == convert(typeof(u.lat), π / 2)
+iszero(u::Spherical{T}) where T = u.lat == -T(π) / 2
+isinf(u::Spherical{T}) where T = u.lat == T(π) / 2
 isfinite(u::Spherical) = ~isinf(u)
 isapprox(u::Spherical, v::Spherical; args...) = S2coord(u) ≈ S2coord(v)
 
