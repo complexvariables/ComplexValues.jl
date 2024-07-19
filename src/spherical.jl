@@ -8,17 +8,29 @@ struct Spherical{T<:AbstractFloat} <: Number
 end
 
 # constructors
-Spherical{T}(z::Spherical{T}) where {T<:AbstractFloat} = z
+function Spherical{T}(z::Spherical{S}) where {T<:AbstractFloat,S}
+    U = promote_type(T, S)
+    return Spherical{T}(convert(U, z.lat), convert(U, z.lon))
+end
 
-latitude(z::Number) = π / 2 - 2 * acot(abs(z))
+function Spherical{T}(z::Complex{S}) where {T<:AbstractFloat,S}
+    Tz = Complex{T}(z)
+    return Spherical{T}(latitude(Tz), angle(Tz))
+end
+
+function Spherical{T}(z::Polar{S}) where {T<:AbstractFloat,S}
+    Tz = Polar{T}(z)
+    return Spherical{T}(latitude(Tz), angle(Tz))
+end
+
 function Spherical{T}(z::Number) where {T<:AbstractFloat}
-    θ, ϕ = latitude(z), angle(z)
-    Spherical{T}(convert(T, θ), convert(T, ϕ))
+    θ, ϕ = latitude(T(z)), angle(T(z))
+    return Spherical{T}(θ, ϕ)
 end
 
 # Constructors without subtype
 """
-	Spherical(latitude,azimuth)
+	Spherical(latitude, azimuth)
 Construct a spherical representation with given `latitude` in [-π/2,π/2] and `azimuth`.
 """
 function Spherical(θ::Real, ϕ::Real)
@@ -42,7 +54,7 @@ function Complex(z::Spherical{S}) where {S<:Real}
     if iszero(z)
         zero(Complex{S})
     else
-        cot(π / 4 - z.lat / 2) * exp(complex(zero(z.lon), z.lon))
+        cot((π - 2z.lat) / 4) * cis(z.lon)
     end
 end
 
@@ -68,6 +80,9 @@ end
 inv(u::Spherical) = Spherical(-u.lat, cleanangle(-u.lon))
 /(u::Spherical, v::Spherical) = u * inv(v)
 
+# π/2 is converted to Float64, so avoid it
+latitude(z::Number) = (π - 4 * acot(abs(z))) / 2
+
 # common complex overloads
 angle(u::Spherical) = cleanangle(u.lon)
 function abs(z::Spherical{T}) where {T}
@@ -76,7 +91,7 @@ function abs(z::Spherical{T}) where {T}
     elseif isinf(z)
         T(Inf)
     else
-        cot(π / 4 - z.lat / 2)
+        cot((π - 2z.lat) / 4)
     end
 end
 abs2(u::Spherical) = abs(u)^2
@@ -85,6 +100,9 @@ imag(u::Spherical) = abs(u) * sin(u.lon)
 conj(u::Spherical) = Spherical(u.lat, -u.lon)
 sign(u::Spherical) = Spherical(zero(u.lat), u.lon)
 
+real_type(::Spherical{T}) where {T} = T
+real_type(::Type{Spherical{T}}) where {T} = T
+
 # numerical comparisons
 iszero(u::Spherical) = u.lat == convert(typeof(u.lat), -π / 2)
 isinf(u::Spherical) = u.lat == convert(typeof(u.lat), π / 2)
@@ -92,5 +110,5 @@ isfinite(u::Spherical) = ~isinf(u)
 isapprox(u::Spherical, v::Spherical; args...) = S2coord(u) ≈ S2coord(v)
 
 # pretty output
-show(io::IO, z::Spherical) = print(io, "(latitude = $(z.lat/pi)⋅π, angle = $(z.lon/pi)⋅π)")
+show(io::IO, z::Spherical) = print(io, "(latitude = $(z.lat / π)⋅π, angle = $(z.lon / π)⋅π)")
 show(io::IO, ::MIME"text/plain", z::Spherical) = print(io, "Complex Spherical: ", z)

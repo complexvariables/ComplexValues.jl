@@ -39,6 +39,9 @@ one(::Type{Polar}) = one(Polar{Float})
 zero(::Type{Polar{T}}) where {T<:AbstractFloat} = Polar{T}(zero(T), zero(T))
 zero(::Type{Polar}) = zero(Polar{Float})
 
+real_type(::Polar{T}) where {T} = T
+real_type(::Type{Polar{T}}) where {T} = T
+
 # conversion to standard complex
 function Complex(z::Polar{S}) where {S<:AbstractFloat}
     # the following allows NaN angles to be ignored for 0

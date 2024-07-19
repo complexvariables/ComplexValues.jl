@@ -1,6 +1,6 @@
 module ComplexValues
 
-export Polar, Spherical, S2coord
+export Polar, Spherical, S2coord, real_type
 
 # Individually overloaded operators
 import Base: Complex, complex, float, iszero, isapprox, isinf, isfinite, one, zero
@@ -11,8 +11,8 @@ cleanangle(θ) = π - mod2pi(π - θ)  # map angle to equivalent in (-pi,pi]
 Float = typeof(1.0)  # default base floating type
 
 # Definitions of the types
-include("spherical.jl")
 include("polar.jl")
+include("spherical.jl")
 
 AnyComplex{T<:AbstractFloat} = Union{Complex{T},Polar{T},Spherical{T}}
 AnyNonnative{T<:AbstractFloat} = Union{Polar{T},Spherical{T}}
@@ -20,6 +20,8 @@ AnyNonnative{T<:AbstractFloat} = Union{Polar{T},Spherical{T}}
 
 complex(z::AnyNonnative) = z
 float(z::AnyNonnative) = z
+real_type(::Complex{T}) where {T} = T
+real_type(::Type{Complex{T}}) where {T} = T
 
 # promotion rules and conversion boilerplate
 import Base: promote_rule
@@ -33,7 +35,7 @@ convert(::Type{Complex{S}}, z::AnyNonnative) where {S<:Real} = convert(Complex{S
 convert(::Type{Polar{S}}, z::AnyNonnative) where {S<:AbstractFloat} = Polar{S}(z)
 convert(::Type{Polar{S}}, z::Number) where {S<:AbstractFloat} = Polar{S}(Complex(z))
 convert(::Type{Spherical{S}}, z::AnyNonnative) where {S<:AbstractFloat} = Spherical{S}(z)
-convert(::Type{Spherical{S}}, z::Number) where {S<:AbstractFloat} = Spherical{S}(Complex(z))
+convert(::Type{Spherical{S}}, z::Number) where {S<:AbstractFloat} = Spherical{S}(Complex{S}(z))
 
 # Most other 1-argument and 2-argument base functions just get converted to regular complex
 for f in [:cos, :sin, :tan, :sec, :csc, :cot, :acos, :asin, :atan, :asec, :acsc, :acot, :sincos, :sinpi,
