@@ -22,6 +22,8 @@ complex(z::AnyNonnative) = z
 float(z::AnyNonnative) = z
 real_type(::Complex{T}) where {T} = T
 real_type(::Type{Complex{T}}) where {T} = T
+real_type(x::Real) = typeof(x)
+real_type(T::Type{<:Real}) = T
 
 # promotion rules and conversion boilerplate
 import Base: promote_rule
