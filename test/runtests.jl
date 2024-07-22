@@ -11,6 +11,8 @@ using Test
     @test Polar(10.0f0) isa Number
     @test Polar(2.0f0, pi) isa Number
     @test Polar(pi, pi) isa Number
+    @test real_type(Polar(1, 2)) == Float64
+    @test real_type(Polar{Float32}(1, 2)) == Float32
 end
 
 @testset "Constructions of Spherical" begin
@@ -20,24 +22,27 @@ end
     @test Spherical(10.0f0) isa Number
     @test Spherical(2.0f0, pi) isa Number
     @test Spherical(pi / 2, pi) isa Number
+    @test real_type(Spherical(1)) == Float64
+    @test real_type(Spherical{Float32}(1)) == Float32
     @test S2coord(Spherical(1)) ≈ [1, 0, 0]
 end
 
-@testset "Conversions between Polar, Spherical" begin
-    for z in [-5 + 1im, 1.0im, -2, 10.0f0, Polar(Inf, -pi / 5), Spherical(1, 0.5)]
+@testset "Conversions between Polar, Spherical in $T" for T in (Float64, Float32, BigFloat)
+    for z in [-T(5) + 1im, T(1)*1im, -T(2), T(10), Polar(6, -T(pi) / 5), Spherical(1, T(1//2))]
         @test Polar(Spherical(z)) ≈ z
     end
-    for z in [-5 + 1im, 1.0im, -2, 10.0f0]
-        @test Polar{Float64}(Spherical{Float64}(z)) ≈ z
+    for z in [5 + 1im, 1im, -2, 10]
+        zz = complex(T(real(z)),T(imag(z)))
+        @test Polar(Spherical{T}(z)) ≈ zz
     end
 end
 
-@testset "Conversions in and out of Complex" begin
-    for z in [-5 + 1im, 1.0im, -2, 10.0f0, Polar(Inf, -pi / 5), Spherical(1, 0.5)]
-        @test Polar(Complex(z)) ≈ Polar(z)
-        @test Complex(Polar(z)) ≈ Complex(z)
-        @test Spherical(Complex(z)) ≈ Spherical(z)
-        @test Complex(Spherical(z)) ≈ Complex(z)
+@testset "Conversions in and out of Complex in $T" for T in (Float64, BigFloat)
+    for z in [-5 + 1im, 1im, -2, 10, Polar(Inf, -T(pi) / 5), Spherical{T}(1, 1//2)]
+        @test Polar(convert(Complex{T}, z)) ≈ Polar{T}(z)
+        @test convert(Complex{T}, Polar{T}(z)) ≈ convert(Complex{T}, z)
+        @test Spherical(convert(Complex{T}, z)) ≈ Spherical(z)
+        @test convert(Complex{T}, Spherical(z)) ≈ convert(Complex{T}, z)
     end
 end
 
