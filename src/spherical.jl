@@ -1,7 +1,3 @@
-"""
-	(type) Spherical
-Representation of a complex value on the Riemann sphere.
-"""
 struct Spherical{T<:AbstractFloat} <: Number
     lat::T
     lon::T
@@ -37,8 +33,9 @@ function Spherical(θ::Real, ϕ::Real)
     θ, ϕ = promote(float(θ), float(ϕ))
     Spherical{typeof(θ)}(θ, ϕ)
 end
+
 """
-Spherical(z)
+    Spherical(z)
 Construct a spherical representation of the value `z`.
 """
 Spherical(z::Number) = Spherical(latitude(z), angle(z))

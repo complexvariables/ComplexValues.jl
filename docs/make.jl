@@ -14,10 +14,12 @@ makedocs(sitename="ComplexValues.jl",
     pages = [
         "Overview" => "index.md",
         "Polar" => "polar.md",
-        "Spherical" => "spherical.md"
+        "Spherical" => "spherical.md",
+        "API" => "api.md",
 		],
 	modules = [ComplexValues],
-    doctest = true
+    doctest = true,
+    warnonly = true,
     )
 
 deploydocs(

@@ -5,9 +5,3 @@ A `Spherical` value stores the latitude and azimuthal angles. For efficiency, th
 Multiplicative inverse (`inv`) and `sign` of `Spherical` values exploit the structure of the representation. Otherwise, most operations are done by first converting to `Complex`.
 
 The comparators `iszero`, `isinf`, `isfinite`, and `isapprox` are defined appropriately.
-
-```@autodocs
-Modules = [ComplexValues]
-Order = [:type, :function]
-Pages = ["spherical.jl"]
-```
