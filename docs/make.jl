@@ -1,9 +1,16 @@
-push!(LOAD_PATH,"../src")
+import Pkg; Pkg.update("ComplexValues")
 using Documenter, ComplexValues
 
+DocMeta.setdocmeta!(ComplexValues, :DocTestSetup, :(using ComplexValues); recursive=true)
 makedocs(sitename="ComplexValues.jl",
-    format = Documenter.HTML(),
-    authors = "Toby Driscoll",
+    format = Documenter.HTML(
+        prettyurls=get(ENV, "CI", "false") == "true",
+        canonical="https://complexvariables.github.io/ComplexRegions.jl",
+        edit_link="main",
+        assets=String[],
+    ),
+    authors = "Toby Driscoll <driscoll@udel.edu>",
+    repo = Remotes.GitHub("complexvariables", "ComplexValues.jl"),
     pages = [
         "Overview" => "index.md",
         "Polar" => "polar.md",
@@ -14,7 +21,5 @@ makedocs(sitename="ComplexValues.jl",
     )
 
 deploydocs(
-    repo = "github.com/complexvariables/ComplexValues.jl.git"
-#    versions = ["v#.#"],
-#    make = nothing
+    repo = Remotes.GitHub("complexvariables", "ComplexValues.jl")
     )

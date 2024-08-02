@@ -10,7 +10,8 @@ This package provides two additional types for representing complex values in Ju
 - Promotion of any number along with a `Spherical` value results in `Spherical`. 
 - Promotion of any built-in number type with a `Polar` results in `Polar`. 
 - Standard unary and binary functions in `Base` are extended to work with the new types. 
-- The type `AnyComplex{T<:AbstractFloat}` is defined (but not exported) as the union of the built-in `Complex{T}` together with `Polar{T}` and `Spherical{T}`. 
+- The type `AnyComplex{T<:AbstractFloat}` is defined (but not exported) as the union of the built-in `Complex{T}` together with `Polar{T}` and `Spherical{T}`.
+- The `real_type` function is defined to return the real type of a `Complex`, `Polar` or `Spherical` value.
 
 ## Examples
 
