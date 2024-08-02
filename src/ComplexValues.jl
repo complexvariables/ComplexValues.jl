@@ -20,6 +20,21 @@ AnyNonnative{T<:AbstractFloat} = Union{Polar{T},Spherical{T}}
 
 complex(z::AnyNonnative) = z
 float(z::AnyNonnative) = z
+
+"""
+    real_type(z)
+Return the base type of a real or complex float `z`, i.e., the type of its real part.
+
+# Examples
+```jldoctest
+julia> real_type(1.0)
+Float64
+julia> real_type(1.0f0 + 2im)
+Float32
+julia> real_type(Polar(BigFloat(1), 2))
+BigFloat
+```
+"""
 real_type(::Complex{T}) where {T} = T
 real_type(::Type{Complex{T}}) where {T} = T
 real_type(x::Real) = typeof(x)

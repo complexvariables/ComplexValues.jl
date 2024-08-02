@@ -46,6 +46,14 @@ end
     end
 end
 
+@testset "Conversions between floating types" begin
+    T = Float64
+    for z in [-5 + 1im, 1im, -2, 10, Polar(Inf, -T(pi) / 5), Spherical{T}(1, 1//2)]
+        @test convert(Polar{Float32}, z) ≈ Polar{Float32}(z)
+        @test convert(Spherical{Float32}, z) ≈ Spherical{Float32}(z)
+    end
+end
+
 @testset "Zero and infinity for $T,$S" for T in [Polar, Spherical], S = (Float64, BigFloat)
     z = T{S}(Inf)
     @test isinf(z)
