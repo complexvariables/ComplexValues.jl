@@ -6,7 +6,7 @@ makedocs(sitename="ComplexValues.jl",
     format = Documenter.HTML(
         prettyurls=get(ENV, "CI", "false") == "true",
         canonical="https://complexvariables.github.io/ComplexRegions.jl",
-        edit_link="main",
+        edit_link="master",
         assets=String[],
     ),
     authors = "Toby Driscoll <driscoll@udel.edu>",
@@ -23,5 +23,6 @@ makedocs(sitename="ComplexValues.jl",
     )
 
 deploydocs(
-    repo = Remotes.GitHub("complexvariables", "ComplexValues.jl")
+    repo = "github.com/complexvariables/ComplexValues.jl",
+    devbranch = "master"
     )
